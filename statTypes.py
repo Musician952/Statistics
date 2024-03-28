@@ -36,23 +36,27 @@ class DataFile:
     def __init__(self, filePath: str) -> None:
         self.filePath = filePath
 
+from variation import calculateRange
 class NumberData:
     data = []
 
-    def getMinValue(self) -> float:
+    def minValue(self) -> float:
         min = self.data[0]
         for num in self.data:
             if num < min:
                 min = num
         return min
         
-    def getMaxValue(self) -> float:
+    def maxValue(self) -> float:
         max = self.data[0]
         for num in self.data:
             if num > max:
                 max = num
         return max
     
+    def range(self) -> float:
+        return calculateRange(self.minValue, self.maxValue)
+
     def __init__(self, data: list[float]) -> None:
         self.data = data
 
@@ -153,3 +157,11 @@ class DistributionShape(Enum):
     SKEWED_LEFT = 3
     SKEWED_RIGHT = 4
     BIMODAL = 5
+
+class AverageAndWeight():
+    average: float = None
+    weight: float = None
+
+    def __init__(self, average: float, weight: float) -> None:
+        self.average = average
+        self.weight = weight

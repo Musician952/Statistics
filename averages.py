@@ -1,4 +1,5 @@
 from statTypes import DataFile
+from statTypes import AverageAndWeight
 from user_prompts import *
 
 # The average of all numerical values
@@ -22,6 +23,21 @@ def calculateTrimmedMean(collection: list[float], trimPercentage: int = 5) -> fl
         collection.pop(newLen - 1)
         newLen = len(collection)
     return calculateMean(collection)
+
+def calculateHarmonicMean(values: list[float]) -> float:
+    dividend = len(values)
+    divisor = 0.0
+    for value in values:
+        divisor += (1 / value)
+    return dividend / divisor
+
+def calculateWeightedAverage(AveragesAndWeights: list[AverageAndWeight]) -> float:    
+    dividend = 0.0
+    divisor = 0.0
+    for pair in AveragesAndWeights:
+        dividend += (pair.average * pair.weight)
+        divisor += pair.weight
+    return dividend / divisor
 
 # The middle value (when collection can be sorted)
 # Must pass an already sorted collection
@@ -57,14 +73,29 @@ def __print(mean: float, median: any, mode: any, trimmedMean: float):
           '\n')
 
 if __name__ == "__main__":
-    dataPath = getDataFilePath()
-    dataFile = DataFile(dataPath)
-    collection = dataFile.getNumberData() # For now, only accepts float data
-    collection.sort()
+    userInput = input('For normal average calculations, input 1.\n'
+          'For weighted averages, input 2.\n'
+          'For harmonic average, input 3: ')
 
-    mean = calculateMean(collection)
-    median = calculateMedian(collection)
-    mode = calculateMode(collection)
-    trimmedMean = calculateTrimmedMean(collection)
+    if userInput == "1":
+        dataPath = getDataFilePath()
+        dataFile = DataFile(dataPath)
+        collection = dataFile.getNumberData() # For now, only accepts float data
+        collection.sort()
 
-    __print(mean, median, mode, trimmedMean)
+        mean = calculateMean(collection)
+        median = calculateMedian(collection)
+        mode = calculateMode(collection)
+        trimmedMean = calculateTrimmedMean(collection)
+
+        __print(mean, median, mode, trimmedMean)
+    elif userInput == "2":
+        averagesAndWeights = getAveragesAndWeights()
+        weightedAverage = calculateWeightedAverage(averagesAndWeights)
+        print(f'Weighted Average: {weightedAverage}')
+    elif userInput == "3":
+        averages = getListOfAverages()
+        harmonicAverage = calculateHarmonicMean(averages)
+        print(f'Harmonic Average: {harmonicAverage}')
+              
+    print('End of program.')
