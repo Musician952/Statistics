@@ -36,7 +36,6 @@ class DataFile:
     def __init__(self, filePath: str) -> None:
         self.filePath = filePath
 
-from variation import calculateRange
 class NumberData:
     data = []
 
@@ -55,7 +54,13 @@ class NumberData:
         return max
     
     def range(self) -> float:
-        return calculateRange(self.minValue, self.maxValue)
+        return self.maxValue() - self.minValue()
+    
+    def sumOfAllValues(self) -> float:
+        sum = 0
+        for value in self.data:
+            sum += value
+        return sum
 
     def __init__(self, data: list[float]) -> None:
         self.data = data
